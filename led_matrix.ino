@@ -1,11 +1,20 @@
 #include "matrix.h"
+#include "accelerometer.h"
+
+// instantiate matrix representation
+matrix disp;
+
+// instantiate accelerometer
+DFRobot_LIS2DH12 *LIS;
 
 void setup() {
-  // put your setup code here, to run once:
-  matrix disp;
+  setupAccelerometer(LIS);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  // calculate rotation
+  struct rotationValues *rotations;
+  getRotation(LIS, rotations);
+  disp.rotation = rotations->rotation;
 
 }
