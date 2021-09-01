@@ -1,4 +1,7 @@
-#define SIZE 10
+#ifndef MATRIX_H
+#define MATRIX_H
+
+#define MATRIX_LENGTH 10
 
 struct LED {
   int R;
@@ -7,6 +10,8 @@ struct LED {
 };
 
 struct matrix {
-  LED M[SIZE][SIZE];
+  LED M[MATRIX_LENGTH][MATRIX_LENGTH];
   float rotation;
 };
+
+#endif
