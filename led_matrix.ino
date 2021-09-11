@@ -11,5 +11,5 @@ void setup() {
 }
 
 void loop() {
-  redFill();  
+  colourFill(CRGB::Red);  
 }
