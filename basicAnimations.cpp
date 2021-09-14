@@ -28,6 +28,13 @@ void colourFill(CRGB colour) {
   FastLED.show();
 };
 
+void colourFill(CHSV colour) {  
+  for (int i=0; i<NUM_LEDS; i++) {
+    leds[i] = colour;
+  }
+  FastLED.show();
+};
+
 void oneByOne(CRGB colour, int delay_ms) {
   for (int i=0; i<NUM_LEDS; i++) {
     leds[i] = colour;
@@ -42,10 +49,17 @@ void oneByOne(CRGB colour, int delay_ms) {
   }
 };
 
+void clearAll() {
+  FastLED.clear();
+  FastLED.show();
+}
+
 void multiColourFade() {
-  CRGB rainbow[7] = {CRGB::Red, CRGB::DarkOrange, CRGB::Gold, CRGB::GreenYellow, CRGB::SkyBlue, CRGB::Navy, CRGB::BlueViolet};
-  for (int fade=0; fade < 10; fade++) {
-    break;
+  int h = 0;
+  for (int i=0; i<255; i++) {
+    CHSV dispColour(h+i,175, 175);
+    colourFill(dispColour);
+    delay(50);
   }
 }
 

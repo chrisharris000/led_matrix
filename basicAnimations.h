@@ -14,7 +14,9 @@
 
 void setupLEDs();
 void colourFill(CRGB colour);
+void colourFill(CHSV colour);
 void oneByOne(CRGB colour, int delay_ms);
+void clearAll();
 void multiColourFade();
 void waterEffect(DFRobot_LIS2DH12 *LIS);
 
