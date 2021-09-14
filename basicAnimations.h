@@ -18,6 +18,11 @@ void colourFill(CHSV colour);
 void oneByOne(CRGB colour, int delay_ms);
 void clearAll();
 void multiColourFade();
+void spiral(CRGB colour);
+bool matrixFilledIn(struct matrix disp);
+bool cellFilledIn(struct LED cell);
+int RC2Linear(int row, int col);
+void displayMatrix(struct matrix disp);
 void waterEffect(DFRobot_LIS2DH12 *LIS);
 
 #endif

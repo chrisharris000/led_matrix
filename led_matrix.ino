@@ -14,5 +14,8 @@ void setup() {
 }
 
 void loop() {
-  multiColourFade();  
+  //spiral(CRGB::Red);
+  //exit(0);
+  //colourFill(CRGB::Red);
+  clearAll();
 }

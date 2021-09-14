@@ -63,6 +63,129 @@ void multiColourFade() {
   }
 }
 
+void spiral(CRGB colour) {
+  struct matrix disp;
+  int r = 0;
+  int c = 0;
+  char dir = 'E';
+  int cells = 0;
+  struct LED off = {0, 0, 0};
+
+  for (int r=0; r<MATRIX_LENGTH; r++) {
+    for (int c=0; c<MATRIX_LENGTH; c++) {
+      disp.M[r][c] = off;
+    }
+  }
+  
+  while (cells < NUM_LEDS) {
+    if (dir == 'E') {
+      if (c != MATRIX_LENGTH && !cellFilledIn(disp.M[r][c+1])) {
+        c++;
+      }
+      else {
+        Serial.print("(");
+        Serial.print(r);
+        Serial.print(", ");
+        Serial.print(") - cellFilledIn? ");
+        Serial.print(cellFilledIn(disp.M[r][c+1]));
+        Serial.print(" - dir = ");
+        Serial.println(dir);
+        dir = 'S';
+        r++;
+      }
+    }
+
+    else if (dir == 'S') {
+      if (r != MATRIX_LENGTH && !cellFilledIn(disp.M[r+1][c])) {
+        r++;
+      }
+      else {
+        Serial.print("(");
+        Serial.print(r);
+        Serial.print(", ");
+        Serial.print(") - cellFilledIn? ");
+        Serial.print(cellFilledIn(disp.M[r][c+1]));
+        Serial.print(" - dir = ");
+        Serial.println(dir);
+        dir = 'W';
+        c--;
+      }
+    }
+
+    else if (dir == 'W') {
+      if (c != 0 && !cellFilledIn(disp.M[r][c-1])) {
+        c--;
+      }
+      else {
+        Serial.print("(");
+        Serial.print(r);
+        Serial.print(", ");
+        Serial.print(") - cellFilledIn? ");
+        Serial.print(cellFilledIn(disp.M[r][c+1]));
+        Serial.print(" - dir = ");
+        Serial.println(dir);
+        dir = 'S';
+        r--;
+      }
+    }
+
+    else if (dir == 'N') {
+      if (r != 0 && !cellFilledIn(disp.M[r-1][c])) {
+        r--;
+      }
+      else {
+        Serial.print("(");
+        Serial.print(r);
+        Serial.print(", ");
+        Serial.print(") - cellFilledIn? ");
+        Serial.print(cellFilledIn(disp.M[r][c+1]));
+        Serial.print(" - dir = ");
+        Serial.println(dir);
+        dir = 'E';
+        c++;
+      }
+    }
+
+    struct LED cell = {colour.r, colour.g, colour.b};
+    disp.M[r][c] = cell;
+    displayMatrix(disp);
+    delay(100);
+    cells++;
+    Serial.print(r);
+    Serial.print(", ");
+    Serial.println(c);
+  }
+}
+
+bool matrixFilledIn(struct matrix disp) {
+  for (int i=0; i<NUM_LEDS; i++) {
+    int r = floor(i / MATRIX_LENGTH);
+    int c = i % MATRIX_LENGTH;
+    if (!cellFilledIn(disp.M[r][c])) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool cellFilledIn(struct LED cell) {
+  return cell.R && cell.G && cell.B;
+}
+
+int RC2Linear(int row, int col) {
+  return row * MATRIX_LENGTH + col;
+}
+
+void displayMatrix(struct matrix disp) {
+  for (int r=0; r<MATRIX_LENGTH; r++) {
+    for (int c=0; c<MATRIX_LENGTH; c++) {
+      int i = r*MATRIX_LENGTH + c;
+      leds[i] = CRGB(disp.M[r][c].R, disp.M[r][c].G, disp.M[r][c].B);
+    }
+  }
+  FastLED.show();
+}
+
 void waterEffect(DFRobot_LIS2DH12 *LIS) {
   struct matrix disp;
   // calculate rotation
