@@ -64,97 +64,61 @@ void multiColourFade() {
 }
 
 void spiral(CRGB colour) {
+  struct LED LEDColour = {colour.r, colour.g, colour.b};
   struct matrix disp;
-  int r = 0;
-  int c = 0;
-  char dir = 'E';
-  int cells = 0;
-  struct LED off = {0, 0, 0};
+  int top = 0;
+  int bottom = MATRIX_LENGTH-1;
+  int left = 0;
+  int right = MATRIX_LENGTH-1;
 
-  for (int r=0; r<MATRIX_LENGTH; r++) {
-    for (int c=0; c<MATRIX_LENGTH; c++) {
-      disp.M[r][c] = off;
+  // spiral out to in
+  while (true) {
+    if (left > right) break;
+
+    // top row
+    for (int col = left; col <= right; col++) {
+      int row = top;
+      disp.M[row][col] = LEDColour;
+      displayMatrix(disp);
+      delay(50);
     }
+    top++;
+
+    if (top > bottom) break;
+
+    // right column
+    for (int row = top; row <= bottom; row++) {
+      int col = right;
+      disp.M[row][col] = LEDColour;
+      displayMatrix(disp);
+      delay(50);
+    }
+    right--;
+
+    if (left > right) break;
+
+    // bottom row
+    for (int col = right; col >= left; col--) {
+      int row = bottom;
+      disp.M[row][col] = LEDColour;
+      displayMatrix(disp);
+      delay(50);
+    }
+    bottom--;
+
+    if (top > bottom) break;
+
+    // left column
+    for (int row = bottom; row >= top; row--) {
+      int col = left;
+      disp.M[row][col] = LEDColour;
+      displayMatrix(disp);
+      delay(50);
+    }
+    left++;
   }
-  
-  while (cells < NUM_LEDS) {
-    if (dir == 'E') {
-      if (c != MATRIX_LENGTH && !cellFilledIn(disp.M[r][c+1])) {
-        c++;
-      }
-      else {
-        Serial.print("(");
-        Serial.print(r);
-        Serial.print(", ");
-        Serial.print(") - cellFilledIn? ");
-        Serial.print(cellFilledIn(disp.M[r][c+1]));
-        Serial.print(" - dir = ");
-        Serial.println(dir);
-        dir = 'S';
-        r++;
-      }
-    }
-
-    else if (dir == 'S') {
-      if (r != MATRIX_LENGTH && !cellFilledIn(disp.M[r+1][c])) {
-        r++;
-      }
-      else {
-        Serial.print("(");
-        Serial.print(r);
-        Serial.print(", ");
-        Serial.print(") - cellFilledIn? ");
-        Serial.print(cellFilledIn(disp.M[r][c+1]));
-        Serial.print(" - dir = ");
-        Serial.println(dir);
-        dir = 'W';
-        c--;
-      }
-    }
-
-    else if (dir == 'W') {
-      if (c != 0 && !cellFilledIn(disp.M[r][c-1])) {
-        c--;
-      }
-      else {
-        Serial.print("(");
-        Serial.print(r);
-        Serial.print(", ");
-        Serial.print(") - cellFilledIn? ");
-        Serial.print(cellFilledIn(disp.M[r][c+1]));
-        Serial.print(" - dir = ");
-        Serial.println(dir);
-        dir = 'S';
-        r--;
-      }
-    }
-
-    else if (dir == 'N') {
-      if (r != 0 && !cellFilledIn(disp.M[r-1][c])) {
-        r--;
-      }
-      else {
-        Serial.print("(");
-        Serial.print(r);
-        Serial.print(", ");
-        Serial.print(") - cellFilledIn? ");
-        Serial.print(cellFilledIn(disp.M[r][c+1]));
-        Serial.print(" - dir = ");
-        Serial.println(dir);
-        dir = 'E';
-        c++;
-      }
-    }
-
-    struct LED cell = {colour.r, colour.g, colour.b};
-    disp.M[r][c] = cell;
-    displayMatrix(disp);
-    delay(100);
-    cells++;
-    Serial.print(r);
-    Serial.print(", ");
-    Serial.println(c);
-  }
+  clearAll();
+  delay(500);
 }
 
 bool matrixFilledIn(struct matrix disp) {
