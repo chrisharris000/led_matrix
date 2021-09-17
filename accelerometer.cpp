@@ -2,6 +2,7 @@
 
 #define PLANE_AXIS_1 String("x")
 #define PLANE_AXIS_2 String("y")
+#define ROTATION_RESOLUTION 10
 
 void setupAccelerometer(DFRobot_LIS2DH12 *LIS) {
   Wire.begin();
@@ -56,5 +57,10 @@ void getRotation(DFRobot_LIS2DH12 *LIS, struct rotationValues *rotations) {
     (*rotations).bit_y = *z;
   }
 
-  (*rotations).rotation = atan2((*rotations).bit_y, (*rotations).bit_x);
+  (*rotations).rotation = roundToNearest(atan2((*rotations).bit_y, (*rotations).bit_x), ROTATION_RESOLUTION);
+}
+
+float roundToNearest(float n, int resolution) {
+    int base = n / resolution;
+    return ((base+1)*resolution - n <= n - base*resolution) ? (base+1)*resolution : base*resolution;
 }

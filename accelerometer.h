@@ -14,5 +14,6 @@ struct rotationValues {
 void setupAccelerometer(DFRobot_LIS2DH12 *LIS);
 void readAccelerometer(DFRobot_LIS2DH12 *LIS, int16_t *x, int16_t *y, int16_t *z);
 void getRotation(DFRobot_LIS2DH12 *LIS, struct rotationValues *rotations);
+float roundToNearest(float n, int resolution);
 
 #endif

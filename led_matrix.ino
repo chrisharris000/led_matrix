@@ -9,6 +9,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Start of program");
   //setupAccelerometer(LIS);
+  //Serial.println("Accelerometer setup");
   setupLEDs();
   Serial.println("LEDs setup");
 }

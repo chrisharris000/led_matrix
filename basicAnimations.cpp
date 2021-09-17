@@ -150,10 +150,114 @@ void displayMatrix(struct matrix disp) {
   FastLED.show();
 }
 
-void waterEffect(DFRobot_LIS2DH12 *LIS) {
+void waterEffect(DFRobot_LIS2DH12 *LIS, CRGB colour) {
   struct matrix disp;
   // calculate rotation
   struct rotationValues *rotations;
   getRotation(LIS, rotations);
   disp.rotation = rotations->rotation;
+
+  float particles = 120;
+  float wallLength = 340;
+  float LEDSpacing = 33.3;
+  float particleArea = particles * wallLength;
+  struct point p1, p2;
+  int corner = findBottomCorner(disp.rotation);
+  struct LED LEDdisp = {colour.r, colour.g, colour.b};
+
+  // handle flat edge cases
+  if (corner >= TOP_EDGE) {
+    if (corner == TOP_EDGE) {
+      p1 = {wallLength, particles};
+      p2 = {0, particles};
+    }
+
+    if (corner == RIGHT_EDGE) {
+      p1 = {wallLength-particles, wallLength};
+      p2 = {wallLength-particles, 0};
+    }
+
+    if (corner == BOTTOM_EDGE) {
+      p1 = {0, wallLength-particles};
+      p2 = {wallLength, wallLength-particles};
+    }
+
+    if (corner == LEFT_EDGE) {
+      p1 = {particles, 0};
+      p2 = {particles, wallLength};
+    }
+    //std::cout << p1.x << ", " << p1.y << " - " << p2.x << ", " << p2.y << std::endl;
+    float m = (p2.y - p1.y) / (p2.x - p1.x);
+    for (int r=0; r<MATRIX_LENGTH; r++) {
+      for (int c=0; c<MATRIX_LENGTH; c++) {
+        float realX, realY;
+        realX = c*LEDSpacing;
+        realY = r*LEDSpacing;
+
+        if (corner != TOP_EDGE) {
+          if (realY > m*(realX-p1.x)+p1.y) {
+            disp.M[r][c] = LEDdisp;
+          }
+        }
+        else {
+          if (realY < m*(realX-p1.x)+p1.y) {
+            disp.M[r][c] = LEDdisp;
+          }
+        }
+      }
+    }
+  } // closing if corner >= TOP_EDGE
+
+  // handle corner cases
+  else {
+    // calculate side lengths
+    float quad1_rotation = 90*(corner+2) - disp.rotation;
+    float b = sqrt(2*particleArea / tan(deg2rad(quad1_rotation)));
+    float h = (2 * particleArea) / b;
+    //std::cout << "corner = " << corner << std::endl;
+    //std::cout << "rotation = " << rotation << std::endl;
+    //std::cout << "quad1_rotation = " << quad1_rotation << std::endl;
+    //std::cout << "(b, h) = (" << b << ", " << h << ")" << std::endl;
+
+    if (corner == TOP_LEFT) {
+      p1 = {h, 0};
+      p2 = {0, b};
+    }
+
+    if (corner == TOP_RIGHT) {
+      p1 = {wallLength, h};
+      p2 = {wallLength - b, 0};
+    }
+
+    if (corner == BOTTOM_LEFT) {
+      p1 = {wallLength - h, wallLength};
+      p2 = {wallLength, wallLength - b};
+    }
+
+    if (corner == BOTTOM_RIGHT) {
+      p1 = {0, wallLength - h};
+      p2 = {b, wallLength};
+    }
+
+    //std::cout << p1.x << ", " << p1.y << " - " << p2.x << ", " << p2.y << std::endl;
+    float m = (p2.y - p1.y) / (p2.x - p1.x);
+    for (int r=0; r<MATRIX_LENGTH; r++) {
+      for (int c=0; c<MATRIX_LENGTH; c++) {
+        float realX, realY;
+        realX = c*LEDSpacing;
+        realY = r*LEDSpacing;
+
+        if (corner == BOTTOM_RIGHT || corner == BOTTOM_LEFT) {
+          if (realY > m*(realX-p1.x)+p1.y) {
+            disp.M[r][c] = LEDdisp;
+          }
+        }
+        else {
+          if (realY < m*(realX-p1.x)+p1.y) {
+            disp.M[r][c] = LEDdisp;
+          }
+        }
+      }
+    }
+  } // closing else
 }
