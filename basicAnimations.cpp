@@ -260,4 +260,7 @@ void waterEffect(DFRobot_LIS2DH12 *LIS, CRGB colour) {
       }
     }
   } // closing else
+  displayMatrix(disp);
+  delay(50);
+  clearAll();
 }
