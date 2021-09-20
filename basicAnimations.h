@@ -24,5 +24,13 @@ bool cellFilledIn(struct LED cell);
 int RC2Linear(int row, int col);
 void displayMatrix(struct matrix disp);
 void waterEffect(DFRobot_LIS2DH12 *LIS);
+void basicWipe(CRGB colour);
+void elsocLogo();
+void EAnimation();
+void LAnimation();
+void SAnimation();
+void OAnimation();
+void CAnimation();
+void elsocFullAnimation();
 
 #endif
