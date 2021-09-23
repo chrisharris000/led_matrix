@@ -10,7 +10,8 @@
 #define MATRIX_LENGTH 10
 #define NUM_LEDS MATRIX_LENGTH*MATRIX_LENGTH
 #define BRIGHTNESS 100
-
+#define MS_BETWEEN_LETTER_FRAMES 100
+#define MS_BETWEEN_WIPE_FRAMES 100
 
 void setupLEDs();
 void colourFill(CRGB colour);
@@ -23,8 +24,12 @@ bool matrixFilledIn(struct matrix disp);
 bool cellFilledIn(struct LED cell);
 int RC2Linear(int row, int col);
 void displayMatrix(struct matrix disp);
-void waterEffect(DFRobot_LIS2DH12 *LIS);
+void waterEffect(DFRobot_LIS2DH12 *LIS, CRGB colour);
 void basicWipe(CRGB colour);
+int rainbow(int offset);
+void sinRainbow();
+void sparkles();
+void fire();
 void elsocLogo();
 void EAnimation();
 void LAnimation();
