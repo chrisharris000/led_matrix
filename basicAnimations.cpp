@@ -72,163 +72,80 @@ void multiColourFade() {
 }
 
 void spiral(CRGB colour) {
-  struct LED LEDColour = {colour.r, colour.g, colour.b};
-  struct LED off = {0, 0, 0};
-  struct matrix disp;
-  int top = 0;
-  int bottom = MATRIX_LENGTH-1;
-  int left = 0;
-  int right = MATRIX_LENGTH-1;
-
-  for (int r=0; r<MATRIX_LENGTH; r++) {
-    for (int c=0; c<MATRIX_LENGTH; c++) {
-      disp.M[r][c] = off;
-    }
-  }
-
-  // spiral out to in
-  while (true) {
-    if (left > right) break;
-
-    // top row
-    for (int col = left; col <= right; col++) {
-      int row = top;
-      disp.M[row][col] = LEDColour;
-      displayMatrix(disp);
-      delay(50);
-      FastLED.show();
-    }
-    top++;
-
-    if (top > bottom) break;
-
-    // right column
-    for (int row = top; row <= bottom; row++) {
-      int col = right;
-      disp.M[row][col] = LEDColour;
-      displayMatrix(disp);
-      delay(50);
-    }
-    right--;
-
-    if (left > right) break;
-
-    // bottom row
-    for (int col = right; col >= left; col--) {
-      int row = bottom;
-      disp.M[row][col] = LEDColour;
-      displayMatrix(disp);
-      delay(50);
-    }
-    bottom--;
-
-    if (top > bottom) break;
-
-    // left column
-    for (int row = bottom; row >= top; row--) {
-      int col = left;
-      disp.M[row][col] = LEDColour;
-      displayMatrix(disp);
-      delay(50);
-    }
-    left++;
-  }
-  clearAll();
-  delay(500);
-}
-//int coordsR[NUM_LEDS];
-//int coordsC[NUM_LEDS];
-/*void spiral(CRGB colour) {
+  /*
+  int rowCoords[NUM_LEDS];
+  int colCoords[NUM_LEDS];
   int i = 0;
-  struct LED LEDColour = {colour.r, colour.g, colour.b};
-  struct LED off = {0, 0, 0};
-  struct matrix disp;
   int top = 0;
   int bottom = MATRIX_LENGTH-1;
   int left = 0;
   int right = MATRIX_LENGTH-1;
-  Serial.println("Entering off");
-  for (int r=0; r<MATRIX_LENGTH; r++) {
-    for (int c=0; c<MATRIX_LENGTH; c++) {
-      disp.M[r][c] = off;
-    }
-  }
 
   // spiral out to in
-  Serial.println("Entering while true 1");
   while (true) {
     if (left > right) break;
 
     // top row
-    Serial.println("Entering first loop");
     for (int col = left; col <= right; col++) {
       int row = top;
-      disp.M[row][col] = LEDColour;
-      //coordsR[i] = row;
-      //coordsC[i] = col;
-      displayMatrix(disp);
-      delay(50);
+      rowCoords[i] = row;
+      colCoords[i] = col;
+      i++;
     }
     top++;
 
     if (top > bottom) break;
 
     // right column
-    Serial.println("Entering loop 2");
     for (int row = top; row <= bottom; row++) {
       int col = right;
-      disp.M[row][col] = LEDColour;
-      //coordsR[i] = row;
-      //coordsC[i] = col;
-      displayMatrix(disp);
-      delay(50);
+      rowCoords[i] = row;
+      colCoords[i] = col;
+      i++;
     }
     right--;
 
     if (left > right) break;
 
     // bottom row
-    Serial.println("Entering loop 3");
     for (int col = right; col >= left; col--) {
       int row = bottom;
-      disp.M[row][col] = LEDColour;
-      //coordsR[i] = row;
-      //coordsC[i] = col;
-      displayMatrix(disp);
-      delay(50);
+      rowCoords[i] = row;
+      colCoords[i] = col;
+      i++;
     }
     bottom--;
 
     if (top > bottom) break;
 
     // left column
-    Serial.println("Entering loop 4");
     for (int row = bottom; row >= top; row--) {
       int col = left;
-      disp.M[row][col] = LEDColour;
-      //coordsR[i] = row;
-      //coordsC[i] = col;
-      displayMatrix(disp);
-      delay(50);
+      rowCoords[i] = row;
+      colCoords[i] = col;
+      i++;
     }
     left++;
   }
-  /*for (int r=0; r<MATRIX_LENGTH; r++) {
-    for (int c=0; c<MATRIX_LENGTH; c++) {
-      disp.M[r][c] = off;
-    }
-  }
-  displayMatrix(disp);
-  //delay(500);
-
-  // in to out
-  /*for (int j = 0; j<NUM_LEDS; j++) {
-    int currR = coordsR[j];
-    int currC = coordsC[j];
-    int l = RC2Linear(currR, currC);
+  */
+  // to generate hardcoded arrays try the above
+  int rowCoords[NUM_LEDS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 6, 5, 4, 3, 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, 5, 4, 4, 4, 5, 5};
+  int colCoords[NUM_LEDS] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 3, 4, 5, 6, 6, 6, 6, 5, 4, 3, 3, 3, 4, 5, 5, 4};
+  // outside to inside
+  for (int i = 0; i<NUM_LEDS; i++) {
+    int l = RC2Linear(rowCoords[i], colCoords[i]);
     leds[l] = colour;
+    FastLED.show();
+    delay(50);
   }
-}*/
+  // inside to outside
+  for (int i = NUM_LEDS-1; i>=0; i--) {
+    int l = RC2Linear(rowCoords[i], colCoords[i]);
+    leds[l] = CRGB::Black;
+    FastLED.show();
+    delay(50);
+  }
+}
 
 bool matrixFilledIn(struct matrix disp) {
   for (int i=0; i<NUM_LEDS; i++) {
