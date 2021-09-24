@@ -176,12 +176,12 @@ void displayMatrix(struct matrix disp) {
   FastLED.show();
 }
 
-void waterEffect(DFRobot_LIS2DH12 *LIS, CRGB colour) {
+void waterEffect(struct rotationValues rotations, CRGB colour) {
   struct matrix disp;
   // calculate rotation
-  struct rotationValues *rotations;
-  getRotation(LIS, rotations);
-  disp.rotation = rotations->rotation;
+  //struct rotationValues *rotations;
+  //getRotation(LIS, rotations);
+  disp.rotation = rotations.rotation;
 
   float particles = 120;
   float wallLength = 340;

@@ -4,6 +4,7 @@
 #include <Wire.h>
 #include <Arduino.h>
 #include <DFRobot_LIS2DH12.h>
+#include <math.h>
 
 struct rotationValues {
   int16_t bit_x;
@@ -11,9 +12,15 @@ struct rotationValues {
   float rotation;
 };
 
-void setupAccelerometer(DFRobot_LIS2DH12 *LIS);
-void readAccelerometer(DFRobot_LIS2DH12 *LIS, int16_t *x, int16_t *y, int16_t *z);
-void getRotation(DFRobot_LIS2DH12 *LIS, struct rotationValues *rotations);
+struct rawXYZ {
+  int x;
+  int y;
+  int z;
+};
+
+struct rawXYZ readAccelerometer(DFRobot_LIS2DH12 LIS);
+struct rotationValues getRotation(DFRobot_LIS2DH12 LIS);
 float roundToNearest(float n, int resolution);
+float rad2deg(float n);
 
 #endif

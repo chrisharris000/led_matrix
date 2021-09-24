@@ -24,7 +24,7 @@ bool matrixFilledIn(struct matrix disp);
 bool cellFilledIn(struct LED cell);
 int RC2Linear(int row, int col);
 void displayMatrix(struct matrix disp);
-void waterEffect(DFRobot_LIS2DH12 *LIS, CRGB colour);
+void waterEffect(struct rotationValues rotations, CRGB colour);
 void basicWipe(CRGB colour);
 int rainbow(int offset);
 void sinRainbow();

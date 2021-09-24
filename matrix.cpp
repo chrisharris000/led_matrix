@@ -10,7 +10,7 @@ int findBottomCorner(float rotation) {
   // 5 = right edge
   // 6 = bottom edge
   // 7 = left edge
-  if (rotation == 0) return BOTTOM_EDGE;
+  if (rotation == 0 || rotation == 360) return BOTTOM_EDGE;
   if (rotation == 90) return LEFT_EDGE;
   if (rotation == 180) return TOP_EDGE;
   if (rotation == 270) return RIGHT_EDGE;
