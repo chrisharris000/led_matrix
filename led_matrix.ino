@@ -29,5 +29,5 @@ void setup() {
 
 void loop() {
   struct rotationValues rotations = getRotation(LIS);
-  waterEffect(rotations, CRGB::Red);
+  waterEffect(rotations, CRGB::Aqua);
 }
