@@ -183,6 +183,13 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
   //getRotation(LIS, rotations);
   disp.rotation = rotations.rotation;
 
+  struct LED off = {0, 0, 0};
+  for (int r=0; r<MATRIX_LENGTH; r++) {
+      for (int c=0; c<MATRIX_LENGTH; c++) {
+        disp.M[r][c] = off;
+      }
+  }
+
   float particles = 120;
   float wallLength = 340;
   float LEDSpacing = 33.3;
@@ -190,9 +197,13 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
   struct point p1, p2;
   int corner = findBottomCorner(disp.rotation);
   struct LED LEDdisp = {colour.r, colour.g, colour.b};
+  Serial.println("Setup complete");
 
   // handle flat edge cases
   if (corner >= TOP_EDGE) {
+    Serial.println("Flat edge case");
+    Serial.print("corner = ");
+    Serial.println(corner);
     if (corner == TOP_EDGE) {
       p1 = {wallLength, particles};
       p2 = {0, particles};
@@ -213,7 +224,17 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
       p2 = {particles, wallLength};
     }
     //std::cout << p1.x << ", " << p1.y << " - " << p2.x << ", " << p2.y << std::endl;
+    /*Serial.print("p1.x = ");
+    Serial.print(p1.x);
+    Serial.print(", p1.y = ");
+    Serial.print(p1.y);
+    Serial.print(", p2.x = ");
+    Serial.print(p2.x);
+    Serial.print(", p2.y = ");
+    Serial.println(p2.y);*/
     float m = (p2.y - p1.y) / (p2.x - p1.x);
+    //Serial.print("m = ");
+    //Serial.println(m);
     for (int r=0; r<MATRIX_LENGTH; r++) {
       for (int c=0; c<MATRIX_LENGTH; c++) {
         float realX, realY;
@@ -222,12 +243,28 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
 
         if (corner != TOP_EDGE) {
           if (realY > m*(realX-p1.x)+p1.y) {
-            disp.M[r][c] = LEDdisp;
+            //disp.M[r][c] = LEDdisp;
+            int l = RC2Linear(r, c);
+            leds[l] = colour;
+            Serial.print("l = ");
+            Serial.println(l);
+            /*Serial.print("r = ");
+            Serial.print(r);
+            Serial.print(", c = ");
+            Serial.println(c);*/
           }
         }
         else {
           if (realY < m*(realX-p1.x)+p1.y) {
-            disp.M[r][c] = LEDdisp;
+            //disp.M[r][c] = LEDdisp;
+            int l = RC2Linear(r, c);
+            leds[l] = colour;
+            Serial.print("l = ");
+            Serial.println(l);
+            /*Serial.print("r = ");
+            Serial.print(r);
+            Serial.print(", c = ");
+            Serial.println(c);*/
           }
         }
       }
@@ -235,6 +272,7 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
   } // closing if corner >= TOP_EDGE
 
   // handle corner cases
+  
   else {
     // calculate side lengths
     float quad1_rotation = 90*(corner+2) - disp.rotation;
@@ -275,19 +313,25 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
 
         if (corner == BOTTOM_RIGHT || corner == BOTTOM_LEFT) {
           if (realY > m*(realX-p1.x)+p1.y) {
-            disp.M[r][c] = LEDdisp;
+            //disp.M[r][c] = LEDdisp;
+            int l = RC2Linear(r, c);
+            leds[l] = colour;
           }
         }
         else {
           if (realY < m*(realX-p1.x)+p1.y) {
-            disp.M[r][c] = LEDdisp;
+            //disp.M[r][c] = LEDdisp;
+            int l = RC2Linear(r, c);
+            leds[l] = colour;
           }
         }
       }
     }
   } // closing else
-  displayMatrix(disp);
-  delay(50);
+  
+  //displayMatrix(disp);
+  FastLED.show();
+  delay(250);
   clearAll();
 }
 

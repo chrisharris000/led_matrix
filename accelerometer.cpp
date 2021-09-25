@@ -16,12 +16,12 @@ struct rawXYZ readAccelerometer(DFRobot_LIS2DH12 LIS) {
 struct rotationValues getRotation(DFRobot_LIS2DH12 LIS) {
   struct rawXYZ rawValues = readAccelerometer(LIS);
   struct rotationValues rotations;
-  Serial.print("x=");
+  /*Serial.print("x=");
   Serial.println(rawValues.x);
   Serial.print("y=");
   Serial.println(rawValues.y);
   Serial.print("z=");
-  Serial.println(rawValues.z);
+  Serial.println(rawValues.z);*/
   /*Serial.println("--------------");*/
 
   if (PLANE_AXIS_1 == String("x")) {
