@@ -284,23 +284,23 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
     //std::cout << "(b, h) = (" << b << ", " << h << ")" << std::endl;
 
     if (corner == TOP_LEFT) {
-      p1 = {h, 0};
-      p2 = {0, b};
+      p1 = {h, 0}; // originally top left coords
+      p2 = {0, b}; // originally top left coords
     }
 
     if (corner == TOP_RIGHT) {
-      p1 = {wallLength, h};
-      p2 = {wallLength - b, 0};
+      p1 = {wallLength, h}; // originally top right coords
+      p2 = {wallLength - b, 0}; // originally top right coords
     }
 
     if (corner == BOTTOM_LEFT) {
-      p1 = {wallLength - h, wallLength};
-      p2 = {wallLength, wallLength - b};
+      p1 = {wallLength - h, wallLength}; // originally bottom left coords
+      p2 = {wallLength, wallLength - b}; // originally bottom left coords
     }
 
     if (corner == BOTTOM_RIGHT) {
-      p1 = {0, wallLength - h};
-      p2 = {b, wallLength};
+      p1 = {0, wallLength - h}; // originally bottom right coords
+      p2 = {b, wallLength}; // originally bottom right coords
     }
 
     //std::cout << p1.x << ", " << p1.y << " - " << p2.x << ", " << p2.y << std::endl;
