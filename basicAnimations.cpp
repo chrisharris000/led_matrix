@@ -147,7 +147,7 @@ void spiral(CRGB colour) {
   }
 }
 
-bool matrixFilledIn(struct matrix disp) {
+/*bool matrixFilledIn(struct matrix disp) {
   for (int i=0; i<NUM_LEDS; i++) {
     int r = floor(i / MATRIX_LENGTH);
     int c = i % MATRIX_LENGTH;
@@ -156,11 +156,11 @@ bool matrixFilledIn(struct matrix disp) {
     }
   }
   return true;
-}
+}*/
 
-bool cellFilledIn(struct LED cell) {
+/*bool cellFilledIn(struct LED cell) {
   return cell.R && cell.G && cell.B;
-}
+}*/
 
 int RC2Linear(int row, int col) {
   return row * MATRIX_LENGTH + col;
@@ -188,15 +188,19 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
   }
 
   float particles = 120;
-  float wallLength = 340;
-  float LEDSpacing = 33.3;
-  float particleArea = particles * wallLength;
+  float wallLength = 340; // side length of actual 10x10 matrix in mm
+  float LEDSpacing = 33.3; // distance in mm between each LED (i.e. 30 LEDs/m = 1 LED/33.3mm
+  float particleArea = particles * wallLength; // determines approximate area in mm^2 that will be covered with water
+   // coordinate system is with top left corner as (0, 0)
+   // postive x axis is toward the right hand edge
+   // positive y axis is toward the bottom edge
   struct point p1, p2;
-  int corner = findBottomCorner(disp.rotation);
+  int corner = findBottomCorner(disp.rotation); // this is the corner/edge that the 'water' will pool in
   struct LED LEDdisp = {colour.r, colour.g, colour.b};
 
   // handle flat edge cases
   if (corner >= TOP_EDGE) {
+    // for flat edge cases, the water is stagnant forming a rectangle/square
     if (corner == TOP_EDGE) {
       p1 = {wallLength, particles};
       p2 = {0, particles};
@@ -226,6 +230,9 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
         realY = r*LEDSpacing;
 
         if (corner != TOP_EDGE) {
+          // inequality checks whether a given cell (r,c), when projected into the real world coordinates (realY, realX)
+          // is located below the line formed between the 2 points calculated before
+          // special case is the top edge because... (didn't have time to figure this out)
           if (realY > m*(realX-p1.x)+p1.y) {
             int l = RC2Linear(r, c);
             leds[l] = colour;
@@ -245,7 +252,11 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
   
   else {
     // calculate side lengths
-    float quad1_rotation = 90 - ((int)(90*(corner+2) - disp.rotation) % 360);
+    float quad1_rotation = 90 - ((int)(90*(corner+2) - disp.rotation) % 360); // calculate rotation in the range of 0-90 (independent of what the overall rotation is)
+    // the area covered by the water will form a triangle with some rotation (quad1_rotation) and side lengths b and h
+    // We know that the area of the triangle (in the real world) will be A = 0.5 * b * h
+    // We also know that tan(theta) = opp / adj
+    // Combining these 2 facts we get the 2 values below
     float b = sqrt(2*particleArea / tan(deg2rad(quad1_rotation)));
     float h = (2 * particleArea) / b;
 
@@ -276,6 +287,8 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
         realX = c*LEDSpacing;
         realY = r*LEDSpacing;
 
+        // similar to flat edge scenario, except BOTTOM_RIGHT and BOTTOM_LEFT are edge cases
+        // Again, didn't have time to figure it out
         if (corner == BOTTOM_RIGHT || corner == BOTTOM_LEFT) {
           if (realY > m*(realX-p1.x)+p1.y) {
             int l = RC2Linear(r, c);
@@ -293,7 +306,7 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
   } // closing else
   
   FastLED.show();
-  delay(250);
+  delay(250); // vary delay, couldn't really avoid flickering
   clearAll();
 }
 
@@ -425,12 +438,12 @@ void sinRainbow() {
   FastLED.show();
 }
 
-void sparkles() {
+void sparkles(bool finishAnimation) {
   // credit - https://editor.soulmatelights.com/tutorial
   // 6 beats per minute, between 1 and 10
   int numberOfSparkles = beatsin16(6, 10, 20);
   int hue = 50;
-  while (true) {
+  while (!finishAnimation) {
     EVERY_N_MILLISECONDS(100) {
       for (int i = 0; i < numberOfSparkles; i++) {
         int pos = random16(NUM_LEDS);
@@ -460,9 +473,9 @@ DEFINE_GRADIENT_PALETTE(firepal) { // define fire palette
   190,  255,  255,  0, //yellow
   255,  255,  255,  255 // white
 };
-void fire() {
+void fire(bool finishAnimation) {
   // credit - https://editor.soulmatelights.com/gallery/234-fire
-  while (true) {
+  while (!finishAnimation) {
     CRGBPalette16 myPal = firepal;
   
    uint16_t a = millis();
@@ -487,7 +500,7 @@ void elsocFullAnimation() {
 }
 
 void elsocLogo() {
-  // used software in this video to make logo - https://www.youtube.com/watch?v=o6_UYb6I4x4
+  // used software in this video to make logo and letter animations - https://www.youtube.com/watch?v=o6_UYb6I4x4
   leds[0] = CRGB(115, 121, 119);
   leds[1] = CRGB(115, 121, 119);
   leds[2] = CRGB(115, 121, 119);
