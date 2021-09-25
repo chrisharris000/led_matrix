@@ -311,28 +311,37 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
 }
 
 void basicWipe(CRGB colour) {
-  struct matrix disp;
+  //struct matrix disp;
   struct LED colourDisp = {colour.r, colour.g, colour.b};
   struct LED off = {0, 0, 0};
+  int rCoordsToDisp[10];
+  int cCoordsToDisp[10];
   clearAll();
   for (int r = MATRIX_LENGTH-1; r>=0; r--) {
     for (int c = 0; c<MATRIX_LENGTH; c++) {
-      disp.M[r][c] = off;
+      //disp.M[r][c] = off;
     }
   }
 
   // left to right
   for (int c = 0; c<MATRIX_LENGTH; c++) {
     for (int r = 0; r<MATRIX_LENGTH; r++) {
-      disp.M[r][c] = colourDisp;
+      //disp.M[r][c] = colourDisp;
+      rCoordsToDisp[r] = r;
+      cCoordsToDisp[r] = c;
     }
-    displayMatrix(disp);
+    //displayMatrix(disp);
+    for (int i=0; i<10; i++) {
+      int l = RC2Linear(rCoordsToDisp[i], cCoordsToDisp[i]);
+      leds[l] = colour;
+    }
+    FastLED.show();
     delay(MS_BETWEEN_WIPE_FRAMES);
     FastLED.clear();
     FastLED.show();
     for (int r = MATRIX_LENGTH-1; r>=0; r--) {
       for (int c = 0; c<MATRIX_LENGTH; c++) {
-        disp.M[r][c] = off;
+        //disp.M[r][c] = off;
       }
     }
   }
@@ -344,16 +353,22 @@ void basicWipe(CRGB colour) {
   // right to left
   for (int c = MATRIX_LENGTH-1; c>=0; c--) {
     for (int r = 0; r<MATRIX_LENGTH; r++) {
-      disp.M[r][c] = colourDisp;
+      //disp.M[r][c] = colourDisp;
+      rCoordsToDisp[r] = r;
+      cCoordsToDisp[r] = c;
     }
-
-    displayMatrix(disp);
+    for (int i=0; i<10; i++) {
+      int l = RC2Linear(rCoordsToDisp[i], cCoordsToDisp[i]);
+      leds[l] = colour;
+    }
+    FastLED.show();
+    //displayMatrix(disp);
     delay(MS_BETWEEN_WIPE_FRAMES);
     FastLED.clear();
     FastLED.show();
     for (int r = MATRIX_LENGTH-1; r>=0; r--) {
       for (int c = 0; c<MATRIX_LENGTH; c++) {
-        disp.M[r][c] = off;
+        //disp.M[r][c] = off;
       }
     }
   }
@@ -365,16 +380,23 @@ void basicWipe(CRGB colour) {
   // top to bottom
   for (int r = 0; r<MATRIX_LENGTH; r++) {
     for (int c = 0; c<MATRIX_LENGTH; c++) {
-      disp.M[r][c] = colourDisp;
+      //disp.M[r][c] = colourDisp;
+      rCoordsToDisp[r] = r;
+      cCoordsToDisp[r] = c;
     }
 
-    displayMatrix(disp);
+    //displayMatrix(disp);
+    for (int i=0; i<10; i++) {
+      int l = RC2Linear(rCoordsToDisp[i], cCoordsToDisp[i]);
+      leds[l] = colour;
+    }
+    FastLED.show();
     delay(MS_BETWEEN_WIPE_FRAMES);
     FastLED.clear();
     FastLED.show();
     for (int r = MATRIX_LENGTH-1; r>=0; r--) {
       for (int c = 0; c<MATRIX_LENGTH; c++) {
-        disp.M[r][c] = off;
+        //disp.M[r][c] = off;
       }
     }
   }
@@ -386,16 +408,23 @@ void basicWipe(CRGB colour) {
   // bottom to top
   for (int r = MATRIX_LENGTH-1; r>=0; r--) {
     for (int c = 0; c<MATRIX_LENGTH; c++) {
-      disp.M[r][c] = colourDisp;
+      //disp.M[r][c] = colourDisp;
+      rCoordsToDisp[r] = r;
+      cCoordsToDisp[r] = c;
     }
 
-    displayMatrix(disp);
+    //displayMatrix(disp);
+    for (int i=0; i<10; i++) {
+      int l = RC2Linear(rCoordsToDisp[i], cCoordsToDisp[i]);
+      leds[l] = colour;
+    }
+    FastLED.show();
     delay(MS_BETWEEN_WIPE_FRAMES);
     FastLED.clear();
     FastLED.show();
     for (int r = MATRIX_LENGTH-1; r>=0; r--) {
       for (int c = 0; c<MATRIX_LENGTH; c++) {
-        disp.M[r][c] = off;
+        //disp.M[r][c] = off;
       }
     }
   }
@@ -501,49 +530,49 @@ void elsocFullAnimation() {
 
 void elsocLogo() {
   // used software in this video to make logo and letter animations - https://www.youtube.com/watch?v=o6_UYb6I4x4
-  leds[0] = CRGB(115, 121, 119);
-  leds[1] = CRGB(115, 121, 119);
-  leds[2] = CRGB(115, 121, 119);
-  leds[3] = CRGB(115, 121, 119);
-  leds[4] = CRGB(115, 121, 119);
+  leds[0] = CRGB(0, 0, 0);
+  leds[1] = CRGB(0, 0, 0);
+  leds[2] = CRGB(0, 0, 0);
+  leds[3] = CRGB(0, 0, 0);
+  leds[4] = CRGB(0, 0, 0);
   leds[5] = CRGB(255, 255, 255);
   leds[6] = CRGB(255, 255, 0);
   leds[7] = CRGB(255, 255, 0);
   leds[8] = CRGB(255, 255, 0);
   leds[9] = CRGB(255, 255, 0);
-  leds[10] = CRGB(115, 121, 119);
-  leds[11] = CRGB(115, 121, 119);
-  leds[12] = CRGB(115, 121, 119);
-  leds[13] = CRGB(115, 121, 119);
-  leds[14] = CRGB(115, 121, 119);
+  leds[10] = CRGB(0, 0, 0);
+  leds[11] = CRGB(0, 0, 0);
+  leds[12] = CRGB(0, 0, 0);
+  leds[13] = CRGB(0, 0, 0);
+  leds[14] = CRGB(0, 0, 0);
   leds[15] = CRGB(255, 255, 255);
   leds[16] = CRGB(255, 255, 0);
   leds[17] = CRGB(255, 255, 0);
   leds[18] = CRGB(255, 255, 0);
   leds[19] = CRGB(255, 255, 0);
-  leds[20] = CRGB(115, 121, 119);
-  leds[21] = CRGB(115, 121, 119);
-  leds[22] = CRGB(115, 121, 119);
-  leds[23] = CRGB(115, 121, 119);
-  leds[24] = CRGB(115, 121, 119);
+  leds[20] = CRGB(0, 0, 0);
+  leds[21] = CRGB(0, 0, 0);
+  leds[22] = CRGB(0, 0, 0);
+  leds[23] = CRGB(0, 0, 0);
+  leds[24] = CRGB(0, 0, 0);
   leds[25] = CRGB(255, 255, 255);
   leds[26] = CRGB(255, 255, 0);
   leds[27] = CRGB(255, 255, 0);
   leds[28] = CRGB(255, 255, 0);
   leds[29] = CRGB(255, 255, 0);
-  leds[30] = CRGB(115, 121, 119);
-  leds[31] = CRGB(115, 121, 119);
-  leds[32] = CRGB(115, 121, 119);
-  leds[33] = CRGB(115, 121, 119);
-  leds[34] = CRGB(115, 121, 119);
+  leds[30] = CRGB(0, 0, 0);
+  leds[31] = CRGB(0, 0, 0);
+  leds[32] = CRGB(0, 0, 0);
+  leds[33] = CRGB(0, 0, 0);
+  leds[34] = CRGB(0, 0, 0);
   leds[35] = CRGB(255, 255, 255);
   leds[36] = CRGB(255, 255, 0);
   leds[37] = CRGB(255, 255, 0);
   leds[38] = CRGB(255, 255, 0);
   leds[39] = CRGB(255, 255, 0);
-  leds[40] = CRGB(115, 121, 119);
-  leds[41] = CRGB(115, 121, 119);
-  leds[42] = CRGB(255, 255, 255);
+  leds[40] = CRGB(0, 0, 0);
+  leds[41] = CRGB(0, 0, 0);
+  leds[42] = CRGB(0, 0, 0);
   leds[43] = CRGB(255, 255, 255);
   leds[44] = CRGB(255, 255, 255);
   leds[45] = CRGB(255, 255, 255);
@@ -551,38 +580,38 @@ void elsocLogo() {
   leds[47] = CRGB(255, 255, 255);
   leds[48] = CRGB(255, 255, 255);
   leds[49] = CRGB(255, 255, 0);
-  leds[50] = CRGB(115, 121, 119);
-  leds[51] = CRGB(115, 121, 119);
-  leds[52] = CRGB(115, 121, 119);
-  leds[53] = CRGB(115, 121, 119);
-  leds[54] = CRGB(255, 255, 255);
+  leds[50] = CRGB(0, 0, 0);
+  leds[51] = CRGB(255, 255, 255);
+  leds[52] = CRGB(0, 0, 0);
+  leds[53] = CRGB(255, 255, 255);
+  leds[54] = CRGB(0, 0, 0);
   leds[55] = CRGB(0, 0, 0);
   leds[56] = CRGB(255, 255, 255);
   leds[57] = CRGB(255, 255, 0);
   leds[58] = CRGB(255, 255, 0);
   leds[59] = CRGB(255, 255, 0);
-  leds[60] = CRGB(115, 121, 119);
-  leds[61] = CRGB(115, 121, 119);
-  leds[62] = CRGB(115, 121, 119);
-  leds[63] = CRGB(255, 255, 255);
+  leds[60] = CRGB(0, 0, 0);
+  leds[61] = CRGB(255, 255, 255);
+  leds[62] = CRGB(255, 255, 255);
+  leds[63] = CRGB(0, 0, 0);
   leds[64] = CRGB(0, 0, 0);
   leds[65] = CRGB(0, 0, 0);
   leds[66] = CRGB(0, 0, 0);
   leds[67] = CRGB(255, 255, 255);
   leds[68] = CRGB(255, 255, 0);
   leds[69] = CRGB(255, 255, 0);
-  leds[70] = CRGB(115, 121, 119);
-  leds[71] = CRGB(115, 121, 119);
+  leds[70] = CRGB(0, 0, 0);
+  leds[71] = CRGB(255, 255, 255);
   leds[72] = CRGB(255, 255, 255);
-  leds[73] = CRGB(0, 0, 0);
+  leds[73] = CRGB(255, 255, 255);
   leds[74] = CRGB(0, 0, 0);
   leds[75] = CRGB(0, 0, 0);
   leds[76] = CRGB(0, 0, 0);
   leds[77] = CRGB(0, 0, 0);
   leds[78] = CRGB(255, 255, 255);
   leds[79] = CRGB(255, 255, 0);
-  leds[80] = CRGB(115, 121, 119);
-  leds[81] = CRGB(255, 255, 255);
+  leds[80] = CRGB(255, 255, 255);
+  leds[81] = CRGB(0, 0, 0);
   leds[82] = CRGB(0, 0, 0);
   leds[83] = CRGB(0, 0, 0);
   leds[84] = CRGB(0, 0, 0);
@@ -591,7 +620,7 @@ void elsocLogo() {
   leds[87] = CRGB(0, 0, 0);
   leds[88] = CRGB(0, 0, 0);
   leds[89] = CRGB(255, 255, 255);
-  leds[90] = CRGB(255, 255, 255);
+  leds[90] = CRGB(0, 0, 0);
   leds[91] = CRGB(0, 0, 0);
   leds[92] = CRGB(0, 0, 0);
   leds[93] = CRGB(0, 0, 0);
@@ -600,7 +629,7 @@ void elsocLogo() {
   leds[96] = CRGB(0, 0, 0);
   leds[97] = CRGB(0, 0, 0);
   leds[98] = CRGB(0, 0, 0);
-  leds[99] = CRGB(0, 0, 0);
+  leds[99] = CRGB(255, 255, 255);
   FastLED.show();
 }
 
