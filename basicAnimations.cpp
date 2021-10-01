@@ -306,7 +306,7 @@ void waterEffect(struct rotationValues rotations, CRGB colour) {
   } // closing else
   
   FastLED.show();
-  delay(250); // vary delay, couldn't really avoid flickering
+  delay(100); // vary delay, couldn't really avoid flickering
   clearAll();
 }
 

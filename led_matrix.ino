@@ -30,5 +30,5 @@ void setup() {
 void loop() {
   //struct rotationValues rotations = getRotation(LIS);
   //waterEffect(rotations, CRGB::Aqua);
-  basicWipe(CRGB::Red);
+  offset = rainbow(offset);
 }
