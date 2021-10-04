@@ -8,6 +8,11 @@
 DFRobot_LIS2DH12 LIS;
 int offset = 0; // used for rainbow effect
 struct rotationValues *rotations;
+int nColours = 7;
+CRGB colours[] = {CRGB::Red, CRGB::Blue, CRGB::Green, CRGB::Fuchsia, CRGB::Cyan, CRGB::DeepPink, CRGB::Gold};
+CRGB randomColour;
+unsigned long startTime;
+unsigned long endTime;
 
 void setup() {
   Wire.begin();
@@ -29,8 +34,65 @@ void setup() {
 }
 
 void loop() {
-  //struct rotationValues rotations = getRotation(LIS);
-  //waterEffect(rotations, CRGB::Aqua);
-  wordScroll("AB", CRGB::Red, 500);
-  delay(5000);
+  // cycle animations
+  randomColour = CRGB::Fuchsia;
+  oneByOne(randomColour, 100);
+
+  multiColourFade();
+
+  randomColour = CRGB::Cyan;
+  spiral(randomColour);
+
+  startTime = millis();
+  endTime = millis();
+  while ((endTime - startTime) <= 10000) {
+    offset = rainbow(offset);
+    endTime = millis();
+  }
+
+  startTime = millis();
+  endTime = millis();
+  while ((endTime - startTime) <= 10000) {
+    sinRainbow();
+    endTime = millis();
+  }
+
+  startTime = millis();
+  endTime = millis();
+  while ((endTime - startTime) <= 10000) {
+    sparkles(false);
+    endTime = millis();
+  }
+
+  //randomColour = colours[random(nColours)];
+  //wordScroll("POOP", randomColour, 100);
+  // cycle animations
+  randomColour = CRGB::Green;
+  oneByOne(randomColour, 100);
+
+  multiColourFade();
+
+  randomColour = CRGB::Blue;
+  spiral(randomColour);
+
+  startTime = millis();
+  endTime = millis();
+  while ((endTime - startTime) <= 10000) {
+    offset = rainbow(offset);
+    endTime = millis();
+  }
+
+  startTime = millis();
+  endTime = millis();
+  while ((endTime - startTime) <= 10000) {
+    sinRainbow();
+    endTime = millis();
+  }
+
+  startTime = millis();
+  endTime = millis();
+  while ((endTime - startTime) <= 10000) {
+    sparkles(false);
+    endTime = millis();
+  }
 }
