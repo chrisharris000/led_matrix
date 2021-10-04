@@ -1,4 +1,5 @@
 #include "basicAnimations.h"
+#include "letters.h"
 
 CRGB leds[NUM_LEDS];
 
@@ -1973,35 +1974,33 @@ void CAnimation() {
 }
 
 void letterScroll(int* letter, CRGB colour, int delay_ms) {
-  int offset = -9;
-  while (offset < 9) {
-     int RCoordsDisp[NUM_LEDS];
-     int CCoordsDisp[NUM_LEDS];
-     int nCoords = 0;
-  
+  int shift = 9;
+
+  while (shift > -9) {
+    int RCoordsDisp[NUM_LEDS];
+    int CCoordsDisp[NUM_LEDS];
+    int nCoords = 0;
      for (int r = 0; r < MATRIX_LENGTH; r++) {
        for (int c = 0; c < MATRIX_LENGTH; c++) {
-         int index = r * MATRIX_LENGTH + c;
-         if (*(letter+index)) {
+         int index = RC2Linear(r, c);
+         if (*(letter+index) && (c + shift) < MATRIX_LENGTH && (c + shift) >= 0) {
            RCoordsDisp[nCoords] = r;
-           CCoordsDisp[nCoords] = c + offset;
+           CCoordsDisp[nCoords] = c + shift;
            nCoords++;
          }
        }
-     }
+    }
   
-     for (int j = 0; j < nCoords; j++) {
+    for (int j = 0; j < nCoords; j++) {
        int l = RC2Linear(RCoordsDisp[j], CCoordsDisp[j]);
        if (l >= 0 && l < NUM_LEDS) {
          leds[l] = colour;
        }
      }
      FastLED.show();
-  
-     EVERY_N_MILLISECONDS(delay_ms) {
-       clearAll();
-       offset++;
-     }
+     delay(delay_ms);
+     clearAll();
+     shift--;
   }
 }
 
@@ -2016,7 +2015,7 @@ void wordScroll(char* str, CRGB colour, int delay_ms) {
       }
     }
     
-    int* letterArr = letterBytes[letterIdx];
+    int* letterArr = (int *)letterBytes[letterIdx];
     letterScroll(letterArr, colour, delay_ms);
   }
 }

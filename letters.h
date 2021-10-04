@@ -1,8 +1,11 @@
+#ifndef LETTERS_H
+#define LETTERS_H
+
 #define MATRIX_LENGTH 10
 #define NUM_LETTERS 2
 
-char letters[NUM_LETTERS] = {'A', 'B'};
-int letterBytes[NUM_LETTERS][MATRIX_LENGTH][MATRIX_LENGTH] = {// A
+extern char letters[NUM_LETTERS] = {'A', 'B'};
+extern int letterBytes[NUM_LETTERS][MATRIX_LENGTH][MATRIX_LENGTH] = {// A
                                                               {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // 0
                                                                {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},  // 1
                                                                {0, 0, 0, 1, 0, 1, 0, 0, 0, 0},  // 2
@@ -26,3 +29,5 @@ int letterBytes[NUM_LETTERS][MATRIX_LENGTH][MATRIX_LENGTH] = {// A
                                                                {0, 0, 1, 1, 1, 1, 0, 0, 0, 0},  // 8
                                                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}  // 9
                                                            };
+
+#endif

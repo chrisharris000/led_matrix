@@ -5,7 +5,6 @@
 #include <FastLED.h>
 #include "matrix.h"
 #include "accelerometer.h"
-#include "letters.h"
 
 #define LED_PIN 5
 #define MATRIX_LENGTH 10
@@ -40,5 +39,6 @@ void OAnimation();
 void CAnimation();
 void elsocFullAnimation();
 void letterScroll(int* letter, CRGB colour, int delay_ms);
+void wordScroll(char* str, CRGB colour, int delay_ms);
 
 #endif

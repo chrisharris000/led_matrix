@@ -1,6 +1,7 @@
 #include "matrix.h"
 #include "accelerometer.h"
 #include "basicAnimations.h"
+//#include "letters.h"
 #include <Wire.h>
 
 // instantiate accelerometer
@@ -30,5 +31,6 @@ void setup() {
 void loop() {
   //struct rotationValues rotations = getRotation(LIS);
   //waterEffect(rotations, CRGB::Aqua);
-  offset = rainbow(offset);
+  wordScroll("AB", CRGB::Red, 500);
+  delay(5000);
 }
